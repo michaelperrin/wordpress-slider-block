@@ -9,8 +9,12 @@
 import './editor.scss';
 import './style.scss';
 
-const { __ } = wp.i18n; // Import __() from wp.i18n
-const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
+const { __ } = wp.i18n;
+const { registerBlockType } = wp.blocks;
+const { RichText } = wp.editor;
+
+import { PlainText } from '@wordpress/editor';
+import { IconButton } from '@wordpress/components';
 
 /**
  * Register: aa Gutenberg Block.
@@ -25,75 +29,141 @@ const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.b
  * @return {?WPBlock}          The block, if it has been successfully
  *                             registered; otherwise `undefined`.
  */
-registerBlockType( 'cgb/block-slider-block', {
-	// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-	title: __( 'slider-block - CGB Block' ), // Block title.
-	icon: 'shield', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
-	category: 'common', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
-	keywords: [
-		__( 'slider-block — CGB Block' ),
-		__( 'CGB Example' ),
-		__( 'create-guten-block' ),
-	],
+registerBlockType('cgb/block-slider-block', {
+	title: __('Slider block'), // Block title.
+	icon: 'universal-access-alt', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
+	category: 'layout', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
+	attributes: {
+		slides: {
+			type: 'array',
+			source: 'query',
+			default: [],
+			selector: '.slide',
+			query: {
+				title: {
+					source: 'text',
+					selector: 'h3.title',
+				},
+				content: {
+					type: 'string',
+					source: 'children',
+					selector: '.body',
+				},
+			},
+		},
+	},
 
-	/**
-	 * The edit function describes the structure of your block in the context of the editor.
-	 * This represents what the editor will render when the block is used.
-	 *
-	 * The "edit" property must be a valid function.
-	 *
-	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
-	 *
-	 * @param {Object} props Props.
-	 * @returns {Mixed} JSX Component.
-	 */
-	edit: ( props ) => {
-		// Creates a <p class='wp-block-cgb-block-slider-block'></p>.
+	edit: ({ className, attributes, setAttributes }) => {
+		const { slides } = attributes;
+
+		const removeSlide = (slideToRemove) => {
+			setAttributes({
+				slides: slides.filter(slide => slide !== slideToRemove),
+			});
+		};
+
+		const addSlide = () => {
+			setAttributes({
+				slides: [
+					...slides,
+					{
+						title: '',
+						content: '',
+					},
+				],
+			});
+		};
+
+		const slideList = slides.map((slide, index) => (
+			<div className="slide" key={`${index}`}>
+				<div className="remove" onClick={() => removeSlide(slide)}>&times;</div>
+
+				<div className="title">
+					<PlainText
+						className="slide-title"
+						placeholder="Title"
+						value={slide.title}
+						onChange={title => {
+							const newSlides = [...slides];
+
+							newSlides[index] = {
+								...slide,
+								title,
+							};
+
+							setAttributes({ slides: newSlides });
+						}}
+					/>
+				</div>
+
+				<RichText
+					className="slide-content"
+					placeholder="Slide content"
+					value={slide.content}
+					onChange={content => {
+						const newSlides = [...slides];
+
+						newSlides[index] = {
+							...slide,
+							content,
+						};
+
+						setAttributes({ slides: newSlides });
+					}}
+				/>
+			</div>
+		));
+
 		return (
-			<div className={ props.className }>
-				<p>— Hello from the backend.</p>
-				<p>
-					CGB BLOCK: <code>slider-block</code> is a new Gutenberg block
-				</p>
-				<p>
-					It was created via{ ' ' }
-					<code>
-						<a href="https://github.com/ahmadawais/create-guten-block">
-							create-guten-block
-						</a>
-					</code>.
-				</p>
+			<div className={className}>
+				<div className="slides">
+					{slideList}
+				</div>
+
+				<div>
+					<IconButton
+						icon="plus-alt"
+						label="More"
+						isDefault
+						onClick={addSlide}
+					>
+						Add slide
+					</IconButton>
+				</div>
 			</div>
 		);
 	},
+	save: (props) => {
+		const { slides } = props.attributes;
 
-	/**
-	 * The save function defines the way in which the different attributes should be combined
-	 * into the final markup, which is then serialized by Gutenberg into post_content.
-	 *
-	 * The "save" property must be specified and must be a valid function.
-	 *
-	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
-	 *
-	 * @param {Object} props Props.
-	 * @returns {Mixed} JSX Frontend HTML.
-	 */
-	save: ( props ) => {
 		return (
-			<div className={ props.className }>
-				<p>— Hello from the frontend.</p>
-				<p>
-					CGB BLOCK: <code>slider-block</code> is a new Gutenberg block.
-				</p>
-				<p>
-					It was created via{ ' ' }
-					<code>
-						<a href="https://github.com/ahmadawais/create-guten-block">
-							create-guten-block
-						</a>
-					</code>.
-				</p>
+			<div>
+				<div className="slider-container outside-components">
+					<div className="swiper-button-prev" />
+
+					<div className="swiper-container">
+						<div className="swiper-wrapper">
+							{slides.map((slide, index) => (
+								<div key={index} className="swiper-slide slide">
+									<h3 className="title">
+										{slide.title}
+									</h3>
+
+									<div className="body">
+										<RichText.Content value={slide.content} />
+									</div>
+								</div>
+							))}
+						</div>
+
+						<div className="swiper-pagination" />
+					</div>
+
+					<div className="swiper-button-next" />
+				</div>
+
+				<div className="swiper-pagination" />
 			</div>
 		);
 	},
-} );
+});
