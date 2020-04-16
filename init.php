@@ -53,6 +53,13 @@ function slider_block_cgb_block_assets() { // phpcs:ignore
         null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: File modification time.
 	);
 
+	wp_register_style(
+		'slider_block-cgb-block-swiper-style',
+		plugins_url('node_modules/swiper/css/swiper.min.css', __FILE__),
+		array(),
+		null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: File modification time.
+	);
+
 	wp_enqueue_script(
 		'slider_block-front-js',
 		plugins_url('build/front.js', __FILE__),
@@ -84,7 +91,7 @@ function slider_block_cgb_block_assets() { // phpcs:ignore
      */
     register_block_type(
         'cgb/block-slider-block', array(
-            'style'         => 'slider_block-cgb-block-frontend-style',
+            'style'         => ['slider_block-cgb-block-frontend-style', 'slider_block-cgb-block-swiper-style'],
             'editor_script' => 'slider_block-cgb-block-js',
             'editor_style'  => 'slider_block-cgb-block-editor-css',
         )

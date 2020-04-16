@@ -114,7 +114,7 @@ registerBlockType('cgb/block-slider-block', {
 
 		return (
 			<div>
-				<div className="slider-container outside-components">
+				<div className="swiper-container outside-components">
 					<div className="swiper-button-prev" />
 
 					<div className="swiper-container">
