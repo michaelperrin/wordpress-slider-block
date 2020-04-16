@@ -1,0 +1,49 @@
+/**
+ * #.# Editor Styles
+ *
+ * CSS for just Backend enqueued after style.scss
+ * which makes it higher in priority.
+ */
+
+.wp-block-wwmach-swiper-text-block {
+  border: 2px dashed gray;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 16px;
+}
+
+.wp-block-wwmach-swiper-text-block .slides {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.wp-block-wwmach-swiper-text-block .slides .slide {
+  position: relative;
+  padding: 16px;
+  width: 45%;
+  margin: 2%;
+  background: white;
+  box-shadow: 0 3px 20px rgba(28, 33, 39, 0.08);
+}
+
+.wp-block-wwmach-swiper-text-block .slides .slide .remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: #dee2ea;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  text-align: center;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.wp-block-wwmach-swiper-text-block .slides .slide .remove:hover {
+  background: #f20c51;
+  color: white;
+}
+
+.wp-block-wwmach-swiper-text-block .slides .slide .title {
+  font-weight: 20px;
+  font-weight: bold;
+}

@@ -1,14 +1,3 @@
-/**
- * BLOCK: slider-block
- *
- * Registering a basic block with Gutenberg.
- * Simple block, renders and saves the same content without any interactivity.
- */
-
-//  Import CSS.
-import './editor.scss';
-import './style.scss';
-
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
 const { RichText } = wp.editor;
@@ -16,23 +5,10 @@ const { RichText } = wp.editor;
 import { PlainText } from '@wordpress/editor';
 import { IconButton } from '@wordpress/components';
 
-/**
- * Register: aa Gutenberg Block.
- *
- * Registers a new block provided a unique name and an object defining its
- * behavior. Once registered, the block is made editor as an option to any
- * editor interface where blocks are implemented.
- *
- * @link https://wordpress.org/gutenberg/handbook/block-api/
- * @param  {string}   name     Block name.
- * @param  {Object}   settings Block settings.
- * @return {?WPBlock}          The block, if it has been successfully
- *                             registered; otherwise `undefined`.
- */
 registerBlockType('cgb/block-slider-block', {
-	title: __('Slider block'), // Block title.
-	icon: 'universal-access-alt', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
-	category: 'layout', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
+	title: __('Slider block'),
+	icon: 'universal-access-alt',
+	category: 'layout',
 	attributes: {
 		slides: {
 			type: 'array',

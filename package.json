@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "cgb-scripts start",
-    "build": "cgb-scripts build",
-    "eject": "cgb-scripts eject"
+    "start": "wp-scripts start",
+    "build": "wp-scripts build src/index.js src/front.js"
   },
   "dependencies": {
-    "cgb-scripts": "1.23.0",
     "swiper": "^5.3.7"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^8.0.1"
   }
 }
