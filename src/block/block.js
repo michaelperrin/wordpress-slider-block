@@ -5,7 +5,7 @@ const { RichText } = wp.editor;
 import { PlainText } from '@wordpress/editor';
 import { IconButton } from '@wordpress/components';
 
-registerBlockType('cgb/block-slider-block', {
+registerBlockType('mp/slider-block', {
 	title: __('Slider block'),
 	icon: 'universal-access-alt',
 	category: 'layout',

@@ -5,11 +5,11 @@
  * Enqueue CSS/JS of all the blocks.
  *
  * @since   1.0.0
- * @package CGB
+ * @package mp
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
     exit;
 }
 
@@ -27,57 +27,47 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @uses {wp-editor} for WP editor styles.
  * @since 1.0.0
  */
-function slider_block_cgb_block_assets() { // phpcs:ignore
+function slider_block_mp_block_assets()
+{
     // Register block editor script for backend.
     wp_register_script(
-        'slider_block-cgb-block-js', // Handle.
+        'mp-slider-block-js', // Handle.
         plugins_url('build/index.js', __FILE__),
-        array('wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor'),
+        ['wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor'],
         null, // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ), // Version: filemtime — Gets file modification time.
         true // Enqueue the script in the footer.
     );
 
     // Register block styles for both frontend + backend.
     wp_register_style(
-        'slider_block-cgb-style-css', // Handle.
-        plugins_url( 'src/block/editor.css', __FILE__), // Block style CSS.
-        is_admin() ? array('wp-edit-blocks') : null, // Dependency to include the CSS after it.
+        'mp-slider-block-style', // Handle.
+        plugins_url('src/block/editor.css', __FILE__), // Block style CSS.
+        is_admin() ? ['wp-edit-blocks'] : null, // Dependency to include the CSS after it.
         null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.style.build.css' ) // Version: File modification time.
     );
 
     // Register block styles for frontend.
     wp_register_style(
-        'slider_block-cgb-block-frontend-style', // Handle.
-        plugins_url( 'src/block/style.css', __FILE__), // Block editor CSS.
-        array(),
+        'mp-slider-block-frontend-style',
+        plugins_url('src/block/style.css', __FILE__),
+        [],
         null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: File modification time.
-	);
+    );
 
-	wp_register_style(
-		'slider_block-cgb-block-swiper-style',
-		plugins_url('node_modules/swiper/css/swiper.min.css', __FILE__),
-		array(),
-		null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: File modification time.
-	);
+    wp_register_style(
+        'mp-slider-block-swiper-style',
+        plugins_url('node_modules/swiper/css/swiper.min.css', __FILE__),
+        [],
+        null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: File modification time.
+    );
 
-	wp_enqueue_script(
-		'slider_block-front-js',
-		plugins_url('build/front.js', __FILE__),
-		array(),
-		null, // filemtime( plugin_dir_path( __DIR__ ) . 'src/slider/front.build.js' ), // Version: filemtime — Gets file modification time.
-		true // Enqueue the script in the footer.
-	);
-
-    // WP Localized globals. Use dynamic PHP stuff in JavaScript via `cgbGlobal` object.
-    // wp_localize_script(
-    // 	'slider_block-cgb-block-js',
-    // 	'cgbGlobal', // Array containing dynamic data for a JS Global.
-    // 	[
-    // 		'pluginDirPath' => plugin_dir_path( __DIR__ ),
-    // 		'pluginDirUrl'  => plugin_dir_url( __DIR__ ),
-    // 		// Add more data here that you want to access from `cgbGlobal` object.
-    // 	]
-    // );
+    wp_enqueue_script(
+        'mp-slider-block-frontend-js',
+        plugins_url('build/front.js', __FILE__),
+        [],
+        null, // filemtime( plugin_dir_path( __DIR__ ) . 'src/slider/front.build.js' ), // Version: filemtime — Gets file modification time.
+        true // Enqueue the script in the footer.
+    );
 
     /**
      * Register Gutenberg block on server-side.
@@ -90,12 +80,12 @@ function slider_block_cgb_block_assets() { // phpcs:ignore
      * @since 1.16.0
      */
     register_block_type(
-        'cgb/block-slider-block', array(
-            'style'         => ['slider_block-cgb-block-frontend-style', 'slider_block-cgb-block-swiper-style'],
-            'editor_script' => 'slider_block-cgb-block-js',
-            'editor_style'  => 'slider_block-cgb-block-editor-css',
-        )
+        'mp/block-slider-block', [
+            'style'         => ['mp-slider-block-frontend-style', 'mp-slider-block-swiper-style'],
+            'editor_script' => 'mp-slider-block-js',
+            'editor_style'  => 'mp-slider-block-style',
+        ]
     );
 }
 
-add_action( 'init', 'slider_block_cgb_block_assets' );
+add_action('init', 'slider_block_mp_block_assets');

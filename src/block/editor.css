@@ -5,18 +5,18 @@
  * which makes it higher in priority.
  */
 
-.wp-block-wwmach-swiper-text-block {
+.wp-block-mp-slider-block {
   border: 2px dashed gray;
   background: rgba(0, 0, 0, 0.05);
   padding: 16px;
 }
 
-.wp-block-wwmach-swiper-text-block .slides {
+.wp-block-mp-slider-block .slides {
   display: flex;
   flex-wrap: wrap;
 }
 
-.wp-block-wwmach-swiper-text-block .slides .slide {
+.wp-block-mp-slider-block .slides .slide {
   position: relative;
   padding: 16px;
   width: 45%;
@@ -25,7 +25,7 @@
   box-shadow: 0 3px 20px rgba(28, 33, 39, 0.08);
 }
 
-.wp-block-wwmach-swiper-text-block .slides .slide .remove {
+.wp-block-mp-slider-block .slides .slide .remove {
   position: absolute;
   top: 4px;
   right: 4px;
@@ -38,12 +38,12 @@
   cursor: pointer;
 }
 
-.wp-block-wwmach-swiper-text-block .slides .slide .remove:hover {
+.wp-block-mp-slider-block .slides .slide .remove:hover {
   background: #f20c51;
   color: white;
 }
 
-.wp-block-wwmach-swiper-text-block .slides .slide .title {
+.wp-block-mp-slider-block .slides .slide .title {
   font-weight: 20px;
   font-weight: bold;
 }
