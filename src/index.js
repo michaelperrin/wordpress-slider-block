@@ -9,7 +9,7 @@
  * Webpack is compiling as the input file.
  */
 
-import './block/block.js';
+import './block';
 import './slide-block/block.js';
 import './editor.scss';
 import './style.scss';
