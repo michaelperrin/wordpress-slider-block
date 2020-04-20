@@ -41,7 +41,7 @@ function slider_block_mp_block_assets()
     // Register block styles for both frontend + backend.
     wp_register_style(
         'mp-slider-block-style', // Handle.
-        plugins_url('src/block/editor.css', __FILE__), // Block style CSS.
+        plugins_url('build/index.css', __FILE__), // Block style CSS.
         is_admin() ? ['wp-edit-blocks'] : null, // Dependency to include the CSS after it.
         null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.style.build.css' ) // Version: File modification time.
     );
@@ -49,17 +49,17 @@ function slider_block_mp_block_assets()
     // Register block styles for frontend.
     wp_register_style(
         'mp-slider-block-frontend-style',
-        plugins_url('src/block/style.css', __FILE__),
+        plugins_url('build/index.css', __FILE__),
         [],
         null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: File modification time.
     );
 
-    wp_register_style(
-        'mp-slider-block-swiper-style',
-        plugins_url('node_modules/swiper/css/swiper.min.css', __FILE__),
-        [],
-        null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: File modification time.
-    );
+    // wp_register_style(
+    //     'mp-slider-block-swiper-style',
+    //     plugins_url('node_modules/swiper/css/swiper.min.css', __FILE__),
+    //     [],
+    //     null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: File modification time.
+    // );
 
     wp_enqueue_script(
         'mp-slider-block-frontend-js',
@@ -81,9 +81,9 @@ function slider_block_mp_block_assets()
      */
     register_block_type(
         'mp/block-slider-block', [
-            'style'         => ['mp-slider-block-frontend-style', 'mp-slider-block-swiper-style'],
+            'style'         => ['mp-slider-block-frontend-style'],
             'editor_script' => 'mp-slider-block-js',
-            'editor_style'  => 'mp-slider-block-style',
+            'editor_style'  => ['mp-slider-block-style'],
         ]
     );
 }

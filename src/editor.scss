@@ -1,9 +1,34 @@
-/**
- * #.# Editor Styles
- *
- * CSS for just Backend enqueued after style.scss
- * which makes it higher in priority.
- */
+@import "~swiper/swiper.scss";
+
+.swiper-container {
+	color: blue !important;
+
+	> .block-editor-inner-blocks {
+			> .block-editor-block-list__layout {
+				@extend .swiper-wrapper;
+			}
+
+			> .block-editor-block-list__layout {
+				> .wp-block {
+					@extend .swiper-slide;
+				}
+			}
+		}
+
+	// .swiper-wrapper {
+	// 	> .block-editor-inner-blocks {
+	// 		> .block-editor-block-list__layout {
+	// 			@extend .swiper-wrapper;
+	// 		}
+
+	// 		// > .block-editor-block-list__layout {
+	// 		// 	> .wp-block {
+	// 		// 		@extend .swiper-slide;
+	// 		// 	}
+	// 		// }
+	// 	}
+	// }
+}
 
 .wp-block-mp-slider-block {
   border: 2px dashed gray;
@@ -47,3 +72,4 @@
   font-weight: 20px;
   font-weight: bold;
 }
+

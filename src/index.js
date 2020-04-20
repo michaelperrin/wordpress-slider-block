@@ -11,3 +11,5 @@
 
 import './block/block.js';
 import './slide-block/block.js';
+import './editor.scss';
+import './style.scss';
