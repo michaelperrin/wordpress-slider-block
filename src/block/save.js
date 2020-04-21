@@ -2,7 +2,7 @@ const save = ({ attributes }) => {
 	const { slides } = attributes;
 
 	return (
-		<div className="swiper-container">
+		<div className="swiper-container compo-slider-slider-container">
 			<div className="swiper-wrapper">
 				{slides.map((slide, index) => (
 					<div

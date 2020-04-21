@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useRef } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 import { withNotices } from '@wordpress/components';
 import { compose, withInstanceId } from '@wordpress/compose';
 import {
@@ -27,17 +27,14 @@ import {
 } from './shared';
 import addSlide from './edit/add-slide';
 import controls from './edit/controls';
+import initSwiper from './init-swiper';
 
 const ALLOWED_MEDIA_TYPES = [ 'image', 'video' ];
 
 const CoverEdit = (props) => {
 	const videoRef = useRef(null);
-
-	const onUploadError = (message) => {
-		const { noticeOperations } = props;
-		noticeOperations.removeAllNotices();
-		noticeOperations.createErrorNotice(message);
-	}
+	const sliderContainerRef = useRef(null);
+	const [sliderElement, setSliderElement] = useState(null);
 
 	const {
 		attributes,
@@ -50,6 +47,23 @@ const CoverEdit = (props) => {
 
 	const { slides } = attributes;
 
+	useEffect(() => {
+		setSliderElement(initSwiper(sliderContainerRef.current));
+	}, []);
+
+	useEffect(() => {
+		if (sliderElement) {
+			console.log('UP!');
+			sliderElement.update();
+		}
+	}, [slides]);
+
+	const onUploadError = (message) => {
+		const { noticeOperations } = props;
+		noticeOperations.removeAllNotices();
+		noticeOperations.createErrorNotice(message);
+	}
+
 	/**
 	 * Replace the slide at the given index with a new slide in the list of slides
 	 *
@@ -58,9 +72,6 @@ const CoverEdit = (props) => {
 	 */
 	const replaceSlide = (slide, slideIndex) => {
 		const newSlides = Object.assign([], slides, { [slideIndex]: slide });
-
-		console.log(slides, newSlides);
-
 		setAttributes({ slides: newSlides });
 	}
 
@@ -159,10 +170,10 @@ const CoverEdit = (props) => {
 		<>
 			{controls}
 			<div className={classes}>
-				<div className="swiper-container slider-container">
+				<div className="swiper-container slider-container" ref={sliderContainerRef}>
 					<div className="swiper-wrapper slides">
 						{slides.map((slide, index) => (
-							<div className="swiper-slid slide" key={`${index}`}>
+							<div className="swiper-slide slide" key={`${index}`}>
 								{renderSlide(slide, index)}
 							</div>
 						))}
