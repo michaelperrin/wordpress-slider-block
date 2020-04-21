@@ -5,7 +5,7 @@ import edit from './edit';
 import metadata from './block.json';
 import Swiper from 'swiper';
 
-registerBlockType('mp/slider-block', {
+registerBlockType('compo/slider-block', {
 	...metadata,
 	title: __('Slider block'),
 	icon: 'universal-access-alt',

@@ -2,37 +2,9 @@
 	"name": "compo/slider",
 	"category": "common",
 	"attributes": {
-		"title": {
-			"source": "text"
-		},
-		"url": {
-			"type": "string"
-		},
-		"id": {
-			"type": "number"
-		},
-		"hasParallax": {
-			"type": "boolean",
-			"default": false
-		},
-		"dimRatio": {
-			"type": "number",
-			"default": 50
-		},
-		"focalPoint": {
-			"type": "object"
-		},
-		"minHeight": {
-			"type": "number"
-		},
-		"minHeightUnit": {
-			"type": "string"
-		},
-		"gradient": {
-			"type": "string"
-		},
-		"customGradient": {
-			"type": "string"
+		"slides": {
+			"type": "array",
+			"default": []
 		}
 	}
 }

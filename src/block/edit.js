@@ -23,7 +23,9 @@ import {
 	IMAGE_BACKGROUND_TYPE,
 	VIDEO_BACKGROUND_TYPE,
 	backgroundImageStyles,
+	getAttributesFromMedia,
 } from './shared';
+import addSlide from './edit/add-slide';
 import controls from './edit/controls';
 
 const ALLOWED_MEDIA_TYPES = [ 'image', 'video' ];
@@ -46,129 +48,140 @@ const CoverEdit = (props) => {
 		setOverlayColor,
 	} = props;
 
-	const {
-		backgroundType,
-		minHeight,
-		url,
-	} = attributes;
+	const { slides } = attributes;
 
-	const onSelectMedia = (media) => {
-		if (!media || !media.url) {
-			setAttributes({ url: undefined, id: undefined });
-			return;
+	/**
+	 * Replace the slide at the given index with a new slide in the list of slides
+	 *
+	 * @param {object} slide
+	 * @param {number} slideIndex
+	 */
+	const replaceSlide = (slide, slideIndex) => {
+		const newSlides = Object.assign([], slides, { [slideIndex]: slide });
+
+		console.log(slides, newSlides);
+
+		setAttributes({ slides: newSlides });
+	}
+
+	const onSelectMedia = (slide, slideIndex, media) => {
+		const newSlide = {
+			...slide,
+			...getAttributesFromMedia(media)
 		}
-		let mediaType;
-		// for media selections originated from a file upload.
-		if (media.media_type) {
-			if (media.media_type === IMAGE_BACKGROUND_TYPE) {
-				mediaType = IMAGE_BACKGROUND_TYPE;
-			} else {
-				// only images and videos are accepted so if the media_type is not an image we can assume it is a video.
-				// Videos contain the media type of 'file' in the object returned from the rest api.
-				mediaType = VIDEO_BACKGROUND_TYPE;
-			}
-		} else { // for media selections originated from existing files in the media library.
-			if (
-				media.type !== IMAGE_BACKGROUND_TYPE &&
-				media.type !== VIDEO_BACKGROUND_TYPE
-			) {
-				return;
-			}
-			mediaType = media.type;
+		replaceSlide(newSlide, slideIndex);
+	};
+
+	const renderSlide = (slide, slideIndex) => {
+		const hasBackground = !!(slide.url || overlayColor.color); // TODO: use slide specific overlay color instead of a global one
+
+		if (!hasBackground) {
+			const placeholderIcon = <BlockIcon icon={icon} />;
+			const label = __('Slider');
+
+			return (
+				<>
+					{controls}
+					<MediaPlaceholder
+						icon={placeholderIcon}
+						className={className}
+						labels={{
+							title: label,
+							instructions: __('Upload an image or video file, or pick one from your media library.'),
+						}}
+						onSelect={(media) => { onSelectMedia(slide, slideIndex, media) }}
+						accept="image/*,video/*"
+						allowedTypes={ALLOWED_MEDIA_TYPES}
+						notices={noticeUI}
+						onError={onUploadError}
+					>
+						<div
+							className="wp-block-cover__placeholder-background-options"
+						>
+							<ColorPalette
+								disableCustomColors={true}
+								value={overlayColor.color}
+								onChange={setOverlayColor}
+								clearable={false}
+							/>
+						</div>
+					</MediaPlaceholder>
+				</>
+			);
 		}
 
-		setAttributes({
-			url: media.url,
-			id: media.id,
-			backgroundType: mediaType,
-			...(mediaType === VIDEO_BACKGROUND_TYPE ?
-				{ focalPoint: undefined, hasParallax: undefined } :
-				{}
+		const style = {
+			...(
+				slide.backgroundType === IMAGE_BACKGROUND_TYPE ?
+					backgroundImageStyles(slide.url) :
+					{}
 			),
-		});
-	};
-
-	const style = {
-		...(
-			backgroundType === IMAGE_BACKGROUND_TYPE ?
-				backgroundImageStyles(url) :
-				{}
-		),
-		backgroundColor: overlayColor.color,
-		minHeight,
-	};
-
-	const hasBackground = !!(url || overlayColor.color);
-
-	if (!hasBackground) {
-		const placeholderIcon = <BlockIcon icon={icon} />;
-		const label = __('Slider');
+			backgroundColor: overlayColor.color,
+			minHeight: slide.minHeight,
+		};
 
 		return (
-			<>
-				{controls}
-				<MediaPlaceholder
-					icon={placeholderIcon}
-					className={className}
-					labels={{
-						title: label,
-						instructions: __('Upload an image or video file, or pick one from your media library.'),
-					}}
-					onSelect={onSelectMedia}
-					accept="image/*,video/*"
-					allowedTypes={ALLOWED_MEDIA_TYPES}
-					notices={noticeUI}
-					onError={onUploadError}
-				>
-					<div
-						className="wp-block-cover__placeholder-background-options"
-					>
-						<ColorPalette
-							disableCustomColors={true}
-							value={overlayColor.color}
-							onChange={setOverlayColor}
-							clearable={false}
+			<div style={style} data-url={slide.url}>
+				{VIDEO_BACKGROUND_TYPE === slide.backgroundType && (
+					<video
+						ref={videoRef}
+						className="wp-block-slider-slide-video-background"
+						autoPlay
+						muted
+						loop
+						src={slide.url}
+					/>
+				)}
+				<div className="wp-block-cover__inner-container">
+					<div className="title">
+						<PlainText
+							className="slide-title"
+							placeholder="Title"
+							value={slide.title}
+							onChange={title => {
+								const newSlide = {
+									...slide,
+									title,
+								};
+
+								replaceSlide(newSlide, slideIndex);
+							}}
 						/>
 					</div>
-				</MediaPlaceholder>
-			</>
+				</div>
+			</div>
 		);
-	}
+	};
 
 	const classes = className;
 
 	return (
 		<>
 			{controls}
-			<div>
-				<div
-					data-url={url}
-					style={style}
-					className={classes}
-				>
-					{VIDEO_BACKGROUND_TYPE === backgroundType && (
-						<video
-							ref={videoRef}
-							className="wp-block-slider-slide-video-background"
-							autoPlay
-							muted
-							loop
-							src={url}
-						/>
-					)}
-					<div className="wp-block-cover__inner-container">
-						<div className="title">
-							<PlainText
-								className="slide-title"
-								placeholder="Title"
-								value={title}
-								onChange={newTitle => {
-									setAttributes({ title: newTitle });
-								}}
-							/>
-						</div>
+			<div className={classes}>
+				<div className="swiper-container slider-container">
+					<div className="swiper-wrapper slides">
+						{slides.map((slide, index) => (
+							<div className="swiper-slid slide" key={`${index}`}>
+								{renderSlide(slide, index)}
+							</div>
+						))}
 					</div>
+
+					<div className="swiper-pagination" />
+
+					<div className="swiper-button-prev" />
+					<div className="swiper-button-next" />
 				</div>
+
+				<IconButton
+					icon="plus-alt"
+					label="More"
+					isDefault
+					onClick={() => setAttributes({ slides: addSlide(slides) })}
+				>
+					Add slide
+				</IconButton>
 			</div>
 		</>
 	);

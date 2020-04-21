@@ -5,7 +5,7 @@
  * Enqueue CSS/JS of all the blocks.
  *
  * @since   1.0.0
- * @package mp
+ * @package compo
  */
 
 // Exit if accessed directly.
@@ -27,11 +27,11 @@ if (!defined('ABSPATH')) {
  * @uses {wp-editor} for WP editor styles.
  * @since 1.0.0
  */
-function slider_block_mp_block_assets()
+function slider_block_compo_block_assets()
 {
     // Register block editor script for backend.
     wp_register_script(
-        'mp-slider-block-js', // Handle.
+        'compo-slider-block-js', // Handle.
         plugins_url('build/index.js', __FILE__),
         ['wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor'],
         null, // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ), // Version: filemtime — Gets file modification time.
@@ -40,7 +40,7 @@ function slider_block_mp_block_assets()
 
     // Register block styles for both frontend + backend.
     wp_register_style(
-        'mp-slider-block-style', // Handle.
+        'compo-slider-block-style', // Handle.
         plugins_url('build/index.css', __FILE__), // Block style CSS.
         is_admin() ? ['wp-edit-blocks'] : null, // Dependency to include the CSS after it.
         null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.style.build.css' ) // Version: File modification time.
@@ -48,21 +48,21 @@ function slider_block_mp_block_assets()
 
     // Register block styles for frontend.
     wp_register_style(
-        'mp-slider-block-frontend-style',
+        'compo-slider-block-frontend-style',
         plugins_url('build/index.css', __FILE__),
         [],
         null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: File modification time.
     );
 
     // wp_register_style(
-    //     'mp-slider-block-swiper-style',
+    //     'compo-slider-block-swiper-style',
     //     plugins_url('node_modules/swiper/css/swiper.min.css', __FILE__),
     //     [],
     //     null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: File modification time.
     // );
 
     wp_enqueue_script(
-        'mp-slider-block-frontend-js',
+        'compo-slider-block-frontend-js',
         plugins_url('build/front.js', __FILE__),
         [],
         null, // filemtime( plugin_dir_path( __DIR__ ) . 'src/slider/front.build.js' ), // Version: filemtime — Gets file modification time.
@@ -80,12 +80,12 @@ function slider_block_mp_block_assets()
      * @since 1.16.0
      */
     register_block_type(
-        'mp/block-slider-block', [
-            'style'         => ['mp-slider-block-frontend-style'],
-            'editor_script' => 'mp-slider-block-js',
-            'editor_style'  => ['mp-slider-block-style'],
+        'compo/block-slider-block', [
+            'style'         => ['compo-slider-block-frontend-style'],
+            'editor_script' => 'compo-slider-block-js',
+            'editor_style'  => ['compo-slider-block-style'],
         ]
     );
 }
 
-add_action('init', 'slider_block_mp_block_assets');
+add_action('init', 'slider_block_compo_block_assets');
