@@ -1,23 +1,19 @@
 /**
  * WordPress dependencies
  */
-import {
-	useRef,
-} from '@wordpress/element';
-import {
-	withNotices,
-} from '@wordpress/components';
+import { useRef } from '@wordpress/element';
+import { withNotices } from '@wordpress/components';
 import { compose, withInstanceId } from '@wordpress/compose';
 import {
 	BlockIcon,
-	InnerBlocks,
 	MediaPlaceholder,
 	withColors,
 	ColorPalette,
 } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { withDispatch } from '@wordpress/data';
-import controls from './edit/controls';
+import { PlainText } from '@wordpress/editor';
+import { IconButton } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -28,18 +24,9 @@ import {
 	VIDEO_BACKGROUND_TYPE,
 	backgroundImageStyles,
 } from './shared';
+import controls from './edit/controls';
 
-/**
- * Module Constants
- */
 const ALLOWED_MEDIA_TYPES = [ 'image', 'video' ];
-const INNER_BLOCKS_TEMPLATE = [
-	[ 'core/paragraph', {
-		align: 'center',
-		fontSize: 'large',
-		placeholder: __( 'Write title…' ),
-	} ],
-];
 
 const CoverEdit = (props) => {
 	const videoRef = useRef(null);
@@ -115,7 +102,7 @@ const CoverEdit = (props) => {
 
 	if (!hasBackground) {
 		const placeholderIcon = <BlockIcon icon={icon} />;
-		const label = __('Slider!!');
+		const label = __('Slider');
 
 		return (
 			<>
@@ -154,7 +141,6 @@ const CoverEdit = (props) => {
 		<>
 			{controls}
 			<div>
-
 				<div
 					data-url={url}
 					style={style}
@@ -163,7 +149,7 @@ const CoverEdit = (props) => {
 					{VIDEO_BACKGROUND_TYPE === backgroundType && (
 						<video
 							ref={videoRef}
-							className="wp-block-cover__video-background"
+							className="wp-block-slider-slide-video-background"
 							autoPlay
 							muted
 							loop
@@ -171,9 +157,16 @@ const CoverEdit = (props) => {
 						/>
 					)}
 					<div className="wp-block-cover__inner-container">
-						<InnerBlocks
-							template={INNER_BLOCKS_TEMPLATE}
-						/>
+						<div className="title">
+							<PlainText
+								className="slide-title"
+								placeholder="Title"
+								value={title}
+								onChange={newTitle => {
+									setAttributes({ title: newTitle });
+								}}
+							/>
+						</div>
 					</div>
 				</div>
 			</div>

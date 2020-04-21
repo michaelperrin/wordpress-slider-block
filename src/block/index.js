@@ -1,13 +1,12 @@
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
 
-// import { Slide } from '../slide-block/block';
-import { IconButton } from '@wordpress/components';
-
 import edit from './edit';
+import metadata from './block.json';
 import Swiper from 'swiper';
 
 registerBlockType('mp/slider-block', {
+	...metadata,
 	title: __('Slider block'),
 	icon: 'universal-access-alt',
 	category: 'layout',
