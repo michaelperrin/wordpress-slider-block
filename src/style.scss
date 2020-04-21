@@ -4,11 +4,10 @@
  * CSS for both Frontend+Backend.
  */
 
-.wp-block-mp-block-swiper-block {
-  background: red;
-  border: 0.2rem solid black;
-  color: black;
-  margin: 0 auto;
-  max-width: 740px;
-  padding: 2rem;
+.front-slide {
+  width: 100%;
+  height: 720px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
 }
