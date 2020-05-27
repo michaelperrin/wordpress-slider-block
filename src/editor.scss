@@ -1,1 +1,43 @@
 @import "~swiper/css/swiper.css";
+
+.swiper-container {
+  margin-bottom: 32px;
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    width: 50px;
+    height: 70px;
+    background: none;
+
+    &::after {
+      content: "";
+    }
+  }
+
+  .swiper-slide-container {
+    height: 650px;
+    display: flex;
+    align-items: center;
+    color: white;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+
+    .slide-container {
+      z-index: 51;
+      text-align: center;
+      flex-grow: 1;
+      background-size: cover;
+      background-position: center center;
+      text-shadow: 2px 2px 3px rgba(0,0,0,0.4);
+
+      textarea,
+      .block-editor-plain-text {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+      }
+    }
+
+  }
+}

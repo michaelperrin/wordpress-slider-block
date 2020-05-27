@@ -1,21 +1,23 @@
 import Swiper from 'swiper';
 
-const initSwiper = (element) => {
-	const slider = new Swiper(element, {
-		slidesPerView: 1,
-		spaceBetween: 20,
-		pagination: {
-			el: '.swiper-pagination',
-		},
+const initSwiper = (element, options = {}) => {
+  const defaultOptions = {
+    slidesPerView: 1,
+    spaceBetween: 20,
+    pagination: {
+      el: '.swiper-pagination',
+    },
 
-		// Navigation arrows
-		navigation: {
-			nextEl: '.swiper-button-next',
-			prevEl: '.swiper-button-prev',
-		},
-	});
+    // Navigation arrows
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+  };
 
-	return slider;
+  const slider = new Swiper(element, { ...defaultOptions, ...options });
+
+  return slider;
 }
 
 export default initSwiper;

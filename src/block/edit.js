@@ -47,8 +47,23 @@ const CoverEdit = (props) => {
 
   const { slides } = attributes;
 
+  const initSlider = () => {
+    setSliderElement(
+      initSwiper(
+        sliderContainerRef.current,
+        {
+          preventClicks: false,
+          preventClicksPropagation: false,
+          simulateTouch: false,
+        }
+      )
+    );
+  }
+
+  console.log('blaaa');
+
   useEffect(() => {
-    setSliderElement(initSwiper(sliderContainerRef.current));
+    initSlider();
   }, []);
 
   useEffect(() => {
@@ -131,32 +146,34 @@ const CoverEdit = (props) => {
     };
 
     return (
-      <div style={style} data-url={slide.url}>
-        {VIDEO_BACKGROUND_TYPE === slide.backgroundType && (
-        <video
-          ref={videoRef}
-          className="wp-block-slider-slide-video-background"
-          autoPlay
-          muted
-          loop
-          src={slide.url}
-        />
-        )}
-        <div className="wp-block-cover__inner-container">
-          <div className="title">
-            <PlainText
-              className="slide-title"
-              placeholder="Title"
-              value={slide.title}
-              onChange={(title) => {
-                const newSlide = {
-                  ...slide,
-                  title,
-                };
-
-                replaceSlide(newSlide, slideIndex);
-              }}
+      <div className="swiper-slide-container" style={style} data-url={slide.url}>
+        <div className="slide-container">
+          {VIDEO_BACKGROUND_TYPE === slide.backgroundType && (
+            <video
+              ref={videoRef}
+              className="wp-block-slider-slide-video-background"
+              autoPlay
+              muted
+              loop
+              src={slide.url}
             />
+          )}
+          <div className="wp-block-cover__inner-container">
+            <div className="title">
+              <PlainText
+                className="slide-title"
+                placeholder="Title"
+                value={slide.title}
+                onChange={(title) => {
+                  const newSlide = {
+                    ...slide,
+                    title,
+                  };
+
+                  replaceSlide(newSlide, slideIndex);
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>

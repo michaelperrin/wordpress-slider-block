@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "wp-scripts start",
-    "build": "wp-scripts build src/index.js src/front.js",
+    "build": "wp-scripts build src/index.js src/front.js src/editor.js",
     "check-engines": "wp-scripts check-engines",
     "check-licenses": "wp-scripts check-licenses",
 		"lint:js": "wp-scripts lint-js",
