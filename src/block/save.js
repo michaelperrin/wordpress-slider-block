@@ -10,9 +10,13 @@ const save = ({ attributes }) => {
             className="swiper-slide slide front-slide"
             style={`background-image: url('${slide.url}')`}
           >
-            <h3 className="title">
+            <h2 className="title">
               {slide.title}
-            </h3>
+            </h2>
+
+            <div className="content">
+              {slide.content}
+            </div>
           </div>
         ))}
       </div>

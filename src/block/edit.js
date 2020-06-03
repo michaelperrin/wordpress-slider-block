@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { useEffect, useRef, useState } from '@wordpress/element';
-import { PlainText } from '@wordpress/editor';
 import { withNotices, IconButton } from '@wordpress/components';
 import { compose, withInstanceId } from '@wordpress/compose';
 import {
@@ -13,7 +12,6 @@ import {
 } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { withDispatch } from '@wordpress/data';
-
 
 /**
  * Internal dependencies
@@ -29,6 +27,7 @@ import addSlide from './edit/add-slide';
 import controls from './edit/controls';
 import initSwiper from './init-swiper';
 
+const { RichText } = wp.blockEditor;
 const ALLOWED_MEDIA_TYPES = ['image', 'video'];
 
 const CoverEdit = (props) => {
@@ -59,8 +58,6 @@ const CoverEdit = (props) => {
       )
     );
   }
-
-  console.log('blaaa');
 
   useEffect(() => {
     initSlider();
@@ -160,19 +157,37 @@ const CoverEdit = (props) => {
           )}
           <div className="wp-block-cover__inner-container">
             <div className="title">
-              <PlainText
-                className="slide-title"
-                placeholder="Title"
-                value={slide.title}
-                onChange={(title) => {
-                  const newSlide = {
-                    ...slide,
-                    title,
-                  };
+              <h2>
+                <RichText
+                  className="slide-title"
+                  placeholder="Title"
+                  value={slide.title}
+                  onChange={(title) => {
+                    const newSlide = {
+                      ...slide,
+                      title,
+                    };
 
-                  replaceSlide(newSlide, slideIndex);
-                }}
-              />
+                    replaceSlide(newSlide, slideIndex);
+                  }}
+                />
+              </h2>
+
+              <div className="content">
+                <RichText
+                  className="slide-content"
+                  placeholder="Content"
+                  value={slide.content}
+                  onChange={(content) => {
+                    const newSlide = {
+                      ...slide,
+                      content,
+                    };
+
+                    replaceSlide(newSlide, slideIndex);
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>
