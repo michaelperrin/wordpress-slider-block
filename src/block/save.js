@@ -1,6 +1,9 @@
 const save = ({ attributes }) => {
   const { slides } = attributes;
 
+  // Remove empty slides
+  slides = slides.filter(slide => slide.url !== null);
+
   return (
     <div className="swiper-container compo-slider-slider-container">
       <div className="swiper-wrapper">
