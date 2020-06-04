@@ -1,5 +1,8 @@
 const save = ({ attributes }) => {
-  const { slides } = attributes;
+  let { slides } = attributes;
+
+  // Remove empty slides
+  slides = slides.filter(slide => slide.url !== null);
 
   // Remove empty slides
   slides = slides.filter(slide => slide.url !== null);
