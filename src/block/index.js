@@ -5,7 +5,7 @@ import metadata from './block.json';
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
 
-registerBlockType('compo/slider-block', {
+registerBlockType('compo/slider', {
   ...metadata,
   title: __('Slider block'),
   icon: 'universal-access-alt',
